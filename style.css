@@ -1,0 +1,71 @@
+#root {
+    width: 1300px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 3rem;
+}
+
+#bigCont {
+    display: flex;
+    /* justify-content: center; */
+}
+
+#cont {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.btn {
+    height: 100px;
+    width: 100px;
+    cursor: pointer;
+    font-size: 2rem;
+    background-color: #c3f19e;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+#players {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 45px;
+}
+p {
+    font-weight: bold;
+    font-size: 2rem;
+    margin: 0;
+}
+
+#valueCont, #whoseTurn {
+    text-align: center;
+}
+
+#nameBox {
+    margin-top: 30px;
+    text-align: center;
+}
+#name {
+    width: 200px;
+    height: 30px;
+    border: 1px solid #221d1d;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#findPlayer {
+    height: 45px;
+    width: 350px;
+    background-color: #000000;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#loading {
+    text-align: center;
+    margin: 0 auto;
+}
