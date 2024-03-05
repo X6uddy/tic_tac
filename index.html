@@ -3,39 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
     <title>tic-tac-toe</title>
 </head>
 <body>
-    <div id="root" style="width: 1300px; margin: 0 auto;">
-        <h1 style="text-align: center;">Tic-Tac-Toe</h1>
-        <div>
-            <p id="userCont">You: <span id="username"></span></p>
-            <p id="opponentCont">Your opponent: <span id="opponentName"></span></p>
+    <div id="root">
+        <h1>Tic-Tac-Toe</h1>
+        <div id="players">
+            <p id="userCont" >You: <span id="username"></span></p>
+            <p id="opponentCont" >Your opponent: <span id="opponentName"></span></p>
         </div>
 
         <p id="valueCont">You're playing as <span id="value"></span></p>
 
         <p id="whoseTurn">X's turn</p>
 
-        <div>
+        <div id="nameBox">
             <p id="enterName">Please, enter your name: </p>
-            <input type="text" id="name" placeholder="Name..." autocomplete="off">
+            <input type="text" id="name" placeholder="Name..." autocomplete="off"><br/>
+            <button id="findPlayer">Search for a player</button>
         </div>
 
-        <button id="findPlayer">Search for a player</button>
-        <img src="/loading.svg" alt="loading_gif" id="loading">
+        <img src="/loading.svg" alt="loading_gif" id="loading" >
 
-        <div>
-            <p class="turnBox"></p>
-            <p class="turnBox"></p>
-            <p class="turnBox"></p>
-            <p class="turnBox"></p>
-            <p class="turnBox"></p>
-            <p class="turnBox"></p>
-            <p class="turnBox"></p>
-            <p class="turnBox"></p>
-            <p class="turnBox"></p>
+        <div id="bigCont" >
+            <div id="cont">
+                <button id="btn1" class="btn"></button>
+                <button id="btn2" class="btn"></button>
+                <button id="btn3" class="btn"></button>
+                <button id="btn4" class="btn"></button>
+                <button id="btn5" class="btn"></button>
+                <button id="btn6" class="btn"></button>
+                <button id="btn7" class="btn"></button>
+                <button id="btn8" class="btn"></button>
+                <button id="btn9" class="btn"></button>
+            </div>
         </div>
     </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.getElementById('userCont').style.display = 'none';
+        document.getElementById('opponentCont').style.display = 'none';
+        document.getElementById('valueCont').style.display = 'none';
+        document.getElementById('whoseTurn').style.display = 'none';
+        document.getElementById('bigCont').style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
+        let name;
+        const socket = io();
+        // const idForView = ['userCont', 'opponentCon', 'valueCont', 'whoseTurn', 'bigCont'];
+        // const idForHidden = ['loading', 'nameBox'];
+        document.getElementById('findPlayer').addEventListener('click', function(){
+            name=document.getElementById('name').value;
+            document.getElementById('username').innerText=name;
+            if(name == null || name == '') {
+                alert("Enter the name");
+            } else {
+                socket.emit('find', {name: name});
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('findPlayer').disabled = true;
+            }
+        })
+        socket.on('find', (e) => {
+            console.log('connect')
+            let allPlayersArray = e.allPlayers;
+            console.log(allPlayersArray)
+            document.getElementById('userCont').style.display = 'block';
+            document.getElementById('opponentCont').style.display = 'block';
+            document.getElementById('valueCont').style.display = 'block';
+            document.getElementById('whoseTurn').style.display = 'block';
+            document.getElementById('bigCont').style.display = 'flex';
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('nameBox').style.display = 'none';
+            document.getElementById('whoseTurn').innerText = 'X';
+
+            let opponentName;
+            let value;
+
+            const foundObj = allPlayersArray.find(obj => obj.p1.p1name == `${name}` || obj.p2.p2name == `${name}`);
+            foundObj.p1.p1name == `${name}` ? opponentName = foundObj.p2.p2name : opponentName = foundObj.p1.p1name;
+            foundObj.p1.p1name == `${name}` ? value = foundObj.p1.p1value : value = foundObj.p2.p2value;
+
+            document.getElementById('opponentName').innerText = opponentName;
+            document.getElementById('value').innerText = opponentName;
+        })
+    </script>
 </body>
 </html>
