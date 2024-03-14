@@ -94,6 +94,29 @@
             })
         })
 
+        socket.on('playing', (e) => {
+            const foundObj = (e.allPlayers).find(obj => obj.p1.p1name == `${name}` || obj.p2.p2name == `${name}`);
+            p1Id = foundObj.p1.p1move;
+            p2Id = foundObj.p2.p2move; 
+
+            if((foundObj.sum)%2 == 0) {
+                document.getElementById('whoseTurn').innerText ="O's Turn";
+            } else {
+                document.getElementById('whoseTurn').innerText ="X's Turn";
+            }
+
+            if(p1Id != '') {
+                document.getElementById(`${p1Id}`).innerText = 'X';
+                document.getElementById(`${p1Id}`).disabled = true;
+                document.getElementById(`${p1Id}`).style.color = '#000';
+            }
+            if(p2Id != '') {
+                document.getElementById(`${p2Id}`).innerText = 'O';
+                document.getElementById(`${p2Id}`).disabled = true;
+                document.getElementById(`${p2Id}`).style.color = '#000';
+            }
+            check(name, foundObj.sum)
+        })
     </script>
 </body>
 </html>
