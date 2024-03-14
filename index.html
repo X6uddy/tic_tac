@@ -51,8 +51,6 @@
         document.getElementById('loading').style.display = 'none';
         let name;
         const socket = io();
-        // const idForView = ['userCont', 'opponentCon', 'valueCont', 'whoseTurn', 'bigCont'];
-        // const idForHidden = ['loading', 'nameBox'];
         document.getElementById('findPlayer').addEventListener('click', function(){
             name=document.getElementById('name').value;
             document.getElementById('username').innerText=name;
@@ -85,8 +83,17 @@
             foundObj.p1.p1name == `${name}` ? value = foundObj.p1.p1value : value = foundObj.p2.p2value;
 
             document.getElementById('opponentName').innerText = opponentName;
-            document.getElementById('value').innerText = opponentName;
+            document.getElementById('value').innerText = value;
         })
+
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                let value = document.getElementById('value').innerText;
+                btn.innerText = value;
+                socket.emit('playing', {value: value, id: btn.id, name: name})
+            })
+        })
+
     </script>
 </body>
 </html>
